@@ -1,38 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cfca46c3-e96e-49a5-9a8f-ac524054b8a4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Arguments.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Server/Controller.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Server/EBook.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Server/EBookDatabase.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Server/EBookPage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Server/ServerThread.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Client/TCPClient.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Server/TCPServer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/exupery_page1" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/exupery_page2" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/exupery_page3" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/exupery_page4" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/joyce_page1" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/joyce_page2" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/joyce_page3" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/joyce_page4" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/networks.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/shelley_page1" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/shelley_page2" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/shelley_page3" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/eBook-pages/shelley_page4" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="cfca46c3-e96e-49a5-9a8f-ac524054b8a4" name="Default" comment="Initial&#10;">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="networks.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -99,25 +69,25 @@
       <file leaf-file-name="TCPClient.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Client/TCPClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="77" column="0" selection-start="2200" selection-end="2200" vertical-scroll-proportion="-10.030303" vertical-offset="1037" max-vertical-offset="1602">
+            <state line="70" column="41" selection-start="2009" selection-end="2009" vertical-scroll-proportion="-7.6666665" vertical-offset="989" max-vertical-offset="1602">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Arguments.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Arguments.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Arguments.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="684">
+            <state line="41" column="1" selection-start="695" selection-end="695" vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="684">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerThread.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ServerThread.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Server/ServerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="26" selection-start="794" selection-end="794" vertical-scroll-proportion="-1.6363636" vertical-offset="486" max-vertical-offset="1188">
+            <state line="33" column="26" selection-start="794" selection-end="794" vertical-scroll-proportion="0.31213874" vertical-offset="486" max-vertical-offset="1188">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -152,8 +122,8 @@
         <option value="$PROJECT_DIR$/src/Server/EBookPage.java" />
         <option value="$PROJECT_DIR$/src/Server/Controller.java" />
         <option value="$PROJECT_DIR$/src/Server/TCPServer.java" />
-        <option value="$PROJECT_DIR$/src/Client/TCPClient.java" />
         <option value="$PROJECT_DIR$/src/Server/ServerThread.java" />
+        <option value="$PROJECT_DIR$/src/Client/TCPClient.java" />
       </list>
     </option>
   </component>
@@ -489,11 +459,16 @@
       <created>1396079723596</created>
       <updated>1396079723596</updated>
     </task>
+    <task id="LOCAL-00001" summary="Initial">
+      <created>1397232834115</created>
+      <updated>1397232834115</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="27" width="1368" height="742" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -506,7 +481,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3296355" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296355" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -514,7 +489,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21229868" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.073938504" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2947702" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2947702" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -700,26 +675,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Server/ServerThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="26" selection-start="794" selection-end="794" vertical-scroll-proportion="-1.6363636" vertical-offset="486" max-vertical-offset="1188">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Client/TCPClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="0" selection-start="2200" selection-end="2200" vertical-scroll-proportion="-10.030303" vertical-offset="1037" max-vertical-offset="1602">
+        <state line="70" column="41" selection-start="2009" selection-end="2009" vertical-scroll-proportion="-7.6666665" vertical-offset="989" max-vertical-offset="1602">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Arguments.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="684">
+        <state line="41" column="1" selection-start="695" selection-end="695" vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="684">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Server/ServerThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="26" selection-start="794" selection-end="794" vertical-scroll-proportion="0.31213874" vertical-offset="486" max-vertical-offset="1188">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
