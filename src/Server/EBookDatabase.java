@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class EBookDatabase {
 
-  public final static String LOCATION = "/home/ben/Projects/networks/eBook-pages/";
+  public final static String LOCATION = "C:\\Users\\Ben\\IdeaProjects\\ass1.networks\\eBook-pages";
 
   private ArrayList<EBook> database;
 

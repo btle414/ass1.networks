@@ -30,6 +30,9 @@ public class TCPServer {
 
       // accept connection from connection queue
       Socket connectionSocket = welcomeSocket.accept();
+
+      System.out.println("connection from " + connectionSocket);
+
       Runnable r = new ServerThread(connectionSocket, ebd);
       new Thread(r).start();
 

@@ -70,6 +70,7 @@ public class TCPClient {
         while (true) {
           line = inFromServer.readLine();
           if (line.length() <= 0) break;
+          line += '\n';
           sentenceFromServer += line;
         }
       } catch (IOException ioe) {

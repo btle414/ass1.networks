@@ -13,10 +13,12 @@ public class ServerThread implements Runnable {
 
   private Socket socket;
   private EBookDatabase ebd;
+  private ServerProtocol protocol;
 
   public ServerThread(Socket socket, EBookDatabase ebd) {
     this.socket = socket;
     this.ebd = ebd;
+    this.protocol = new ServerProtocol(ebd);
   }
 
   @Override
@@ -40,13 +42,11 @@ public class ServerThread implements Runnable {
       DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
 
       execute(clientSentence, outToClient);
-
-      System.out.println("connection from " + socket);
     }
   }
 
   public void execute(String input, DataOutputStream out) {
-    String outputString = ebd.getBook("joyce").getPage(1).getText();
+    String outputString = protocol.parse(input);
 
     try {
       out.writeBytes(outputString);
