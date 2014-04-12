@@ -1,4 +1,4 @@
-package Server;
+package Server.EBook;
 
 /**
  * Created by ben on 29/03/14.
@@ -7,10 +7,12 @@ public class EBookPage {
 
   private int pageNum;
   private String text;
+  private EBookForum forum;
 
   public EBookPage(int pageNum, String text) {
     this.pageNum = pageNum;
     this.text = text;
+    this.forum = new EBookForum();
   }
 
   public int getPageNum() {
@@ -19,6 +21,10 @@ public class EBookPage {
 
   public String getText() {
     return text;
+  }
+
+  public void postComment(int lineNumber, String content) {
+    forum.postComment(lineNumber, content);
   }
 
   @Override

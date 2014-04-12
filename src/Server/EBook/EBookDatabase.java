@@ -1,4 +1,4 @@
-package Server; /**
+package Server.EBook; /**
  * Created by ben on 29/03/14.
  */
 
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class EBookDatabase {
 
   public final static String LOCATION = "C:\\Users\\Ben\\IdeaProjects\\ass1.networks\\eBook-pages";
+  public final static int LINES_PER_PAGE = 9;
 
   private ArrayList<EBook> database;
 
@@ -22,6 +23,16 @@ public class EBookDatabase {
       return database.get(i);
     }
     return null;
+  }
+
+  public void postComment(String book, int lineNumber, String content) {
+    int page = (int) Math.floor((lineNumber-1)/LINES_PER_PAGE);
+    int pageLineNumber = lineNumber - page*LINES_PER_PAGE;
+    page += 1;
+
+    System.out.println("Posting comment in book " + book + " on page " + page + " at line number " + pageLineNumber);
+    getBook(book).postComment(page, pageLineNumber, content);
+
   }
 
   public void loadAll() {
@@ -39,7 +50,7 @@ public class EBookDatabase {
           fileText += line + "\n";
         }
       } catch (IOException io) {
-        System.out.println("Server.EBookDatabase: read file failed");
+        System.out.println("Server.EBook.EBookDatabase: read file failed");
       }
 
       EBook book = getBook(info[0]);

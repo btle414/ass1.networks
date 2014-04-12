@@ -1,4 +1,4 @@
-package Server;
+package Server.EBook;
 
 import java.util.ArrayList;
 
@@ -30,6 +30,10 @@ public class EBook {
       return pages.get(i);
     }
     return null;
+  }
+
+  public void postComment(int page, int pageLineNumber, String content) {
+    pages.get(page).postComment(pageLineNumber, content);
   }
 
   @Override

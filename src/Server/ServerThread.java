@@ -1,5 +1,7 @@
 package Server;
 
+import Server.EBook.EBookDatabase;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -33,13 +35,14 @@ public class ServerThread implements Runnable {
   public void newConnection() throws Exception {
     // create read stream to get input
     BufferedReader inFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
     String clientSentence;
     while (true) {
+      System.out.println("Waiting for input");
       clientSentence = inFromClient.readLine();
 
       System.out.println("received: " + clientSentence);
       // send reply
-      DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
 
       execute(clientSentence, outToClient);
     }
@@ -50,7 +53,7 @@ public class ServerThread implements Runnable {
 
     try {
       out.writeBytes(outputString);
-      out.writeBytes(""+'\n'); //terminate readLine
+      out.writeBytes("" + '\n'); //terminate readline
       out.flush();
     } catch (IOException ioe) {
       System.out.println("Failed to output to client.");
