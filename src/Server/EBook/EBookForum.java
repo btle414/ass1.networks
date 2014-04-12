@@ -14,6 +14,10 @@ public class EBookForum {
     }
   }
 
+  public ResponseComments getCommentsString(int lineNumber, int index) {
+    return lines[lineNumber].getCommentsString(index);
+  }
+
   public void postComment(int lineNumber, String content) {
     lines[lineNumber].postComment(content);
   }

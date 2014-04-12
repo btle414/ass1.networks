@@ -25,14 +25,13 @@ public class EBookDatabase {
     return null;
   }
 
-  public void postComment(String book, int lineNumber, String content) {
-    int page = (int) Math.floor((lineNumber-1)/LINES_PER_PAGE);
-    int pageLineNumber = lineNumber - page*LINES_PER_PAGE;
-    page += 1;
+  public void postComment(String book, int page, int lineNumber, String content) {
+    System.out.println("Posting comment in book " + book + " on page " + page + " at line number " + lineNumber);
+    getBook(book).postComment(page, lineNumber, content);
+  }
 
-    System.out.println("Posting comment in book " + book + " on page " + page + " at line number " + pageLineNumber);
-    getBook(book).postComment(page, pageLineNumber, content);
-
+  public ResponseComments getCommentsString(String book, int page, int lineNumber, int index) {
+    return getBook(book).getCommentsString(page, lineNumber, index);
   }
 
   public void loadAll() {

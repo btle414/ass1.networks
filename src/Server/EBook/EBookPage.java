@@ -27,6 +27,10 @@ public class EBookPage {
     forum.postComment(lineNumber, content);
   }
 
+  public ResponseComments getCommentsString(int lineNumber, int index) {
+    return forum.getCommentsString(lineNumber, index);
+  }
+
   @Override
   public boolean equals(Object a) {
     if (a instanceof EBookPage) {

@@ -36,6 +36,10 @@ public class EBook {
     pages.get(page).postComment(pageLineNumber, content);
   }
 
+  public ResponseComments getCommentsString(int page, int lineNumber, int index) {
+    return pages.get(page).getCommentsString(lineNumber, index);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (o instanceof EBook) {
