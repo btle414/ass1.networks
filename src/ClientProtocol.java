@@ -1,5 +1,7 @@
 import Client.EBookCommentClientDatabase;
 import Server.EBook.EBookDatabase;
+import Server.EBook.EBookForum;
+import Server.EBook.EBookLineForum;
 
 /**
  * Created by Ben on 13/04/2014.
@@ -9,6 +11,7 @@ public class ClientProtocol {
   private int mostRecentQuery;
   private String currentBook;
   private int currentPage;
+  private int reqLine;
   private EBookCommentClientDatabase ebccd;
 
   public ClientProtocol() {
@@ -29,6 +32,7 @@ public class ClientProtocol {
       mostRecentQuery = TransferObject.ID_POST;
     } else if (parts[0].equals("read_post")) {
       mostRecentQuery = TransferObject.ID_READ;
+      reqLine = Integer.parseInt(parts[1]);
     }
 
     return userInput;
@@ -40,7 +44,7 @@ public class ClientProtocol {
     switch(mostRecentQuery) {
       //find diff with database but do not update
       case TransferObject.ID_TEXT:
-        response = to.getLines(ebccd.hasNewPosts(currentBook, to.getForum()));
+        response = to.getLines(ebccd.hasNewPosts(currentBook, currentPage, to.getForum()));
         break;
 
       //do nothing
@@ -50,7 +54,13 @@ public class ClientProtocol {
 
       //update database when this is called
       case TransferObject.ID_READ:
-        response = "-----Comments-----";
+        response = "-----Comments-----\n";
+        EBookLineForum eblf = ebccd.getForum(currentBook, currentPage).getLineForum(reqLine);
+        for (int i = eblf.getNumComments(); i < to.getForum()[reqLine].length; i++) {
+          String str = to.getForum()[reqLine][i];
+          eblf.postComment(str);
+          response += str + '\n';
+        }
         break;
 
       default:

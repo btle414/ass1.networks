@@ -16,7 +16,7 @@ public class TransferObject implements Serializable {
 
   //associated with text
   private String[] lines;
-  String[][] commentsPerLine;
+  private String[][] commentsPerLine;
 
   public TransferObject() {
     this.id = ID_DEFAULT;

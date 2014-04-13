@@ -15,11 +15,11 @@ public class EBookCommentClientDatabase {
   private final static char PREFIX_NEW_COMMENTS = 'n';
   private final static char PREFIX_SAME_COMMENTS = 'm';
 
-  HashMap<String, EBookForum> db;
+  HashMap<String, EBookForum[]> db;
 
   //map book->page->list of comments (state given by length)
   public EBookCommentClientDatabase() {
-    this.db = new HashMap<String, EBookForum>();
+    this.db = new HashMap<String, EBookForum[]>();
   }
 
   public boolean exists(String book) {
@@ -27,13 +27,21 @@ public class EBookCommentClientDatabase {
   }
 
   public void createForum(String book) {
-    db.put(book, new EBookForum());
+    EBookForum[] ebfa = new EBookForum[EBookDatabase.LINES_PER_PAGE+1];
+    for (int i = 0; i < EBookDatabase.LINES_PER_PAGE+1; i++) {
+      ebfa[i] = new EBookForum();
+    }
+    db.put(book, ebfa);
   }
 
-  public char[] hasNewPosts(String book, String[][] newForum) {
+  public EBookForum getForum(String book, int page) {
+    return db.get(book)[page];
+  }
+
+  public char[] hasNewPosts(String book, int page, String[][] newForum) {
     char[] hasLineNewPosts = new char[EBookDatabase.LINES_PER_PAGE+1];
     if (!exists(book)) createForum(book);
-    EBookForum oldForum = db.get(book);
+    EBookForum oldForum = db.get(book)[page];
 
     //TODO should be i=1? or i=0?
     for (int i = 1; i < EBookDatabase.LINES_PER_PAGE+1; i++) {
