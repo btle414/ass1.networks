@@ -1,10 +1,3 @@
-package Server;/*
- *
- * tcpServer from Kurose and Ross
- *
- * Usage: java Server.TCPServer [server port]
- */
-
 import Server.EBook.EBookDatabase;
 
 import java.net.*;
@@ -41,4 +34,4 @@ public class TCPServer {
 
   } // end of main()
 
-} // end of class Server.TCPServer
+} // end of class TCPServer

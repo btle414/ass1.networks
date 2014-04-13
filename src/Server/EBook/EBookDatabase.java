@@ -41,12 +41,14 @@ public class EBookDatabase {
       String[] info = fileName.split("_");
 
       BufferedReader reader = null;
-      String fileText = "";
+      String[] lines = new String[LINES_PER_PAGE+1];
+      int start = 1;
       try {
         reader = new BufferedReader(new FileReader(fileEntry));
-        String line = "";
+        String line;
         while ((line = reader.readLine()) != null) {
-          fileText += line + "\n";
+          lines[start] = line;
+          start++;
         }
       } catch (IOException io) {
         System.out.println("Server.EBook.EBookDatabase: read file failed");
@@ -57,7 +59,7 @@ public class EBookDatabase {
         book = new EBook(info[0]);
         database.add(book);
       }
-      book.addPage(Integer.parseInt(info[1].replace("page", "")), fileText);
+      book.addPage(Integer.parseInt(info[1].replace("page", "")), lines);
     }
   }
 

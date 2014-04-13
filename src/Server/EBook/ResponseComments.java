@@ -23,6 +23,10 @@ public class ResponseComments {
     return index;
   }
 
+  public LinkedList<String> getComments() {
+    return comments;
+  }
+
   public void setIndex(int index) {
     this.index = index;
   }

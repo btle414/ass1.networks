@@ -19,17 +19,13 @@ public class EBook {
     return name;
   }
 
-  public void addPage(int pageNum, String text) {
+  public void addPage(int pageNum, String[] text) {
     this.pages.add(new EBookPage(pageNum, text));
   }
 
   public EBookPage getPage(int pageNum) {
-    EBookPage wrapper = new EBookPage(pageNum, "");
-    int i = pages.indexOf(wrapper);
-    if (i > -1) {
-      return pages.get(i);
-    }
-    return null;
+    if (pageNum < 0 || pageNum >= this.pages.size()) return null;
+    return pages.get(pageNum);
   }
 
   public void postComment(int page, int pageLineNumber, String content) {

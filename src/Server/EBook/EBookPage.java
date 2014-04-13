@@ -6,10 +6,10 @@ package Server.EBook;
 public class EBookPage {
 
   private int pageNum;
-  private String text;
+  private String[] text;
   private EBookForum forum;
 
-  public EBookPage(int pageNum, String text) {
+  public EBookPage(int pageNum, String[] text) {
     this.pageNum = pageNum;
     this.text = text;
     this.forum = new EBookForum();
@@ -19,8 +19,12 @@ public class EBookPage {
     return pageNum;
   }
 
-  public String getText() {
+  public String[] getText() {
     return text;
+  }
+
+  public EBookForum getForum() {
+    return forum;
   }
 
   public void postComment(int lineNumber, String content) {
