@@ -33,6 +33,9 @@ public class ClientProtocol {
     } else if (parts[0].equals("read_post")) {
       mostRecentQuery = TransferObject.ID_READ;
       reqLine = Integer.parseInt(parts[1]);
+    //this query below never gets called
+    } else if (parts[0].equals("check_new_posts")) {
+      mostRecentQuery = TransferObject.ID_CHECK_NEW_POSTS;
     }
 
     return userInput;
@@ -41,7 +44,7 @@ public class ClientProtocol {
   public String parsePost(TransferObject to) {
     String response = "";
 
-    switch(mostRecentQuery) {
+    switch(to.getID()) {
       //find diff with database but do not update
       case TransferObject.ID_TEXT:
         response = to.getLines(ebccd.hasNewPosts(currentBook, currentPage, to.getForum()));
@@ -63,10 +66,27 @@ public class ClientProtocol {
         }
         break;
 
+      //display if new posts
+      case TransferObject.ID_CHECK_NEW_POSTS:
+        int totalNewPosts = 0;
+        String[][] forum = to.getForum();
+        for (int i = 0; i < forum.length; i++) { totalNewPosts += forum[i].length; }
+        int totalOldPosts = ebccd.getForum(currentBook, currentPage).getTotalPosts();
+        response = (totalOldPosts == totalNewPosts) ? "There are no new posts" : "There are new posts.";
+        break;
+
       default:
         break;
     }
     return response;
+  }
+
+  public boolean isPollSentence(String sentence) {
+    return sentence.split(" ")[0].equals("display");
+  }
+
+  public String getPollSentence() {
+    return "check_new_posts " + currentBook + " " + currentPage;
   }
 
 }

@@ -36,7 +36,7 @@ public class EBookForum implements Serializable {
     return forum;
   }
 
-  public int debug() {
+  public int getTotalPosts() {
     int count = 0;
     for (int i = 0; i < lines.length; i++) {
       count += lines[i].getNumComments();

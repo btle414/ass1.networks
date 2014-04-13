@@ -1,17 +1,24 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Ben on 13/04/2014.
  */
 public class ClientThread {
 
+  private final static int TIMEOUT_INTERVAL_SECONDS = 10;
+
   private Socket clientSocket;
   private ClientProtocol protocol;
+  private String pollSentence;
+  private Timer poll;
 
   public ClientThread(Socket socket) {
     clientSocket = socket;
     protocol = new ClientProtocol();
+    poll = new Timer();
   }
 
   public void execute() {
@@ -36,31 +43,61 @@ public class ClientThread {
         System.out.println("Failed to read user input.");
       }
 
+      class PollTimerTask extends TimerTask {
+
+        private DataOutputStream outToServer;
+        private ObjectInputStream inFromServer;
+        private String pollSentence;
+
+        public PollTimerTask(DataOutputStream outToServer, ObjectInputStream inFromServer, String pollSentence) {
+          this.outToServer = outToServer;
+          this.inFromServer = inFromServer;
+          this.pollSentence = pollSentence;
+        }
+
+        @Override
+        public void run() {
+          //System.out.println("Polling.");
+          writeAndExpectResponse(protocol, outToServer, inFromServer, pollSentence);
+        }
+      }
+
       sentence = protocol.parsePre(sentence);
-
-      // write to server
-      try {
-        outToServer.writeBytes(sentence + '\n');
-        outToServer.flush();
-      } catch (IOException ioe) {
-        System.out.println("Failed to write user input.");
+      if (protocol.isPollSentence(sentence)) {
+        poll.cancel();
+        poll = new Timer();
+        poll.scheduleAtFixedRate(new PollTimerTask(outToServer, inFromServer, protocol.getPollSentence()), TIMEOUT_INTERVAL_SECONDS*1000, TIMEOUT_INTERVAL_SECONDS*1000);
       }
 
-      // create read stream and receive from server
-      TransferObject obj = null;
-      try {
-        obj = (TransferObject) inFromServer.readObject();
-      } catch (ClassNotFoundException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      writeAndExpectResponse(protocol, outToServer, inFromServer, sentence);
 
-      String output = protocol.parsePost(obj);
-
-      // print output
-      System.out.println("===== FROM SERVER ==== ");
-      System.out.println(output);
     }
+  }
+
+  public static void writeAndExpectResponse(ClientProtocol protocol, DataOutputStream outToServer, ObjectInputStream inFromServer, String sentence) {
+    // write to server
+    try {
+      outToServer.writeBytes(sentence + '\n');
+      outToServer.flush();
+    } catch (IOException ioe) {
+      System.out.println("Failed to write user input.");
+    }
+
+    // create read stream and receive from server
+    TransferObject obj = null;
+    try {
+      obj = (TransferObject) inFromServer.readObject();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    String output = protocol.parsePost(obj);
+
+    // print output
+    //System.out.println("===== FROM SERVER ==== ");
+    System.out.println(output);
+
   }
 }

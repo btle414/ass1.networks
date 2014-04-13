@@ -28,12 +28,21 @@ public class ServerProtocol {
     else if (parts[0].equals("post_to_forum")) {
       int lineNumber = Integer.parseInt(parts[1]);
       String content = "";
-      for (int i = 2; i < parts.length; i++) { content += parts[i] + " "; };
-      content.substring(0, content.length()-1);
+      for (int i = 2; i < parts.length; i++) {
+        content += parts[i] + " ";
+      }
+      ;
+      content.substring(0, content.length() - 1);
       tf = parsePostToForum(lineNumber, content);
 
     } else if (parts[0].equals("read_post")) tf = parseReadPost(Integer.parseInt(parts[1]));
 
+    else if (parts[0].equals("check_new_posts")) {
+      tf = parseDisplay(parts[1], Integer.parseInt(parts[2]));
+      tf.setID(TransferObject.ID_CHECK_NEW_POSTS);
+    }
+
+    System.out.println("Returning ID: " + tf.getID());
     return tf;
   }
 

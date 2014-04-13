@@ -11,6 +11,7 @@ public class TransferObject implements Serializable {
   public final static int ID_TEXT = 0;
   public final static int ID_POST = 1;
   public final static int ID_READ = 2;
+  public final static int ID_CHECK_NEW_POSTS = 3;
 
   private int id;
 
@@ -31,8 +32,17 @@ public class TransferObject implements Serializable {
 
   public TransferObject(int id, String[] lines, String[][] commentsPerLine) {
     this();
+    this.id = id;
     this.lines = lines;
     this.commentsPerLine = commentsPerLine;
+  }
+
+  public int getID() {
+    return id;
+  }
+
+  public void setID(int id) {
+    this.id = id;
   }
 
   public String[][] getForum() {
