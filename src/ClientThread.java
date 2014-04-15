@@ -14,11 +14,13 @@ public class ClientThread {
   private ClientProtocol protocol;
   private String pollSentence;
   private Timer poll;
+  private String mode;
 
-  public ClientThread(Socket socket) {
+  public ClientThread(Socket socket, String mode) {
     clientSocket = socket;
     protocol = new ClientProtocol();
     poll = new Timer();
+    this.mode = mode;
   }
 
   public void execute() {
@@ -37,6 +39,8 @@ public class ClientThread {
     //start input stream
     Runnable r = new ClientReceiverThread(protocol, inFromServer);
     new Thread(r).start();
+
+    writeAndExpectResponse(protocol, outToServer, inFromServer, protocol.parsePre("setup " + mode));
 
     while (true) {
       // get input from keyboard
@@ -73,7 +77,7 @@ public class ClientThread {
         poll.scheduleAtFixedRate(new PollTimerTask(outToServer, inFromServer, protocol.getPollSentence()), TIMEOUT_INTERVAL_SECONDS*1000, TIMEOUT_INTERVAL_SECONDS*1000);
       }
 
-      writeAndExpectResponse(protocol, outToServer, inFromServer, sentence);
+      if (!sentence.isEmpty()) writeAndExpectResponse(protocol, outToServer, inFromServer, sentence);
 
     }
   }

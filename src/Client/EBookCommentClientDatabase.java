@@ -55,4 +55,21 @@ public class EBookCommentClientDatabase {
     return hasLineNewPosts;
   }
 
+  public char[] pushHasNewPosts(String book, int page) {
+    char[] hasLineNewPosts = new char[EBookDatabase.LINES_PER_PAGE+1];
+    if (!exists(book)) createForum(book);
+    EBookForum oldForum = db.get(book)[page];
+
+    //TODO should be i=1? or i=0?
+    for (int i = 1; i < EBookDatabase.LINES_PER_PAGE+1; i++) {
+      int numCurrComments = oldForum.getLineForum(i).getNumComments();
+      int numOldComments = oldForum.getLineForum(i).getIndex();
+      if (numCurrComments > numOldComments ) hasLineNewPosts[i] = PREFIX_NEW_COMMENTS;
+      else if (numCurrComments == 0) hasLineNewPosts[i] = PREFIX_NO_COMMENTS;
+      else hasLineNewPosts[i] = PREFIX_SAME_COMMENTS;
+    }
+
+    return hasLineNewPosts;
+  }
+
 }

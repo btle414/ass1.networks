@@ -11,12 +11,20 @@ public class EBookLineForum implements Serializable {
 
   private LinkedList<EBookComment> comments;
 
+  private int index; //for use on client end
+
   public EBookLineForum() {
     comments = new LinkedList<EBookComment>();
+    index = 0;
   }
 
   public void postComment(String content) {
     comments.add(new EBookComment(content));
+  }
+
+  public void postCommentWithUpdate(String content) {
+    postComment(content);
+    index++;
   }
 
   public int getNumComments() {
@@ -45,6 +53,14 @@ public class EBookLineForum implements Serializable {
     }
 
     return strs;
+  }
+
+  public int getIndex() {
+    return index;
+  }
+
+  public void setIndex(int index) {
+    this.index = index;
   }
 
 }

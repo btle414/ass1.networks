@@ -28,6 +28,10 @@ public class EBookForum implements Serializable {
     lines[lineNumber].postComment(content);
   }
 
+  public void postCommentWithUpdate(int lineNumber, String content) {
+    lines[lineNumber].postCommentWithUpdate(content);
+  }
+
   public String[][] convertForumToStrMArray() {
     String[][] forum = new String[lines.length][];
     for (int i = 0; i < lines.length; i++) {
@@ -42,5 +46,9 @@ public class EBookForum implements Serializable {
       count += lines[i].getNumComments();
     }
     return count;
+  }
+
+  public void setLineIndex(int lineNumber, int index) {
+    lines[lineNumber].setIndex(index);
   }
 }

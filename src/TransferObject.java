@@ -13,12 +13,20 @@ public class TransferObject implements Serializable {
   public final static int ID_READ = 2;
   public final static int ID_CHECK_NEW_POSTS = 3;
   public final static int ID_SETUP = 4;
+  public final static int ID_PUSH_POST = 5;
 
   private int id;
 
   //associated with text
   private String[] lines;
   private String[][] commentsPerLine;
+
+  //associated with push post
+  private String pushBook;
+  private int pushPage;
+  private int pushLineNumber;
+  //private int commentIndex; //we can assume because of TCP, there is order
+  private String comment;
 
   public TransferObject() {
     this.id = ID_DEFAULT;
@@ -36,6 +44,16 @@ public class TransferObject implements Serializable {
     this.id = id;
     this.lines = lines;
     this.commentsPerLine = commentsPerLine;
+  }
+
+  //push constructor
+  public TransferObject(int id, String pushBook, int pushPage, int pushLineNumber, String comment) {
+    this();
+    this.id = id;
+    this.pushBook = pushBook;
+    this.pushPage = pushPage;
+    this.pushLineNumber = pushLineNumber;
+    this.comment = comment;
   }
 
   public int getID() {
@@ -58,6 +76,22 @@ public class TransferObject implements Serializable {
       }
     }
     return to;
+  }
+
+  public String getComment() {
+    return comment;
+  }
+
+  public String getPushBook() {
+    return pushBook;
+  }
+
+  public int getPushPage() {
+    return pushPage;
+  }
+
+  public int getPushLineNumber() {
+    return pushLineNumber;
   }
 
 }

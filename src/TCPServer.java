@@ -38,8 +38,8 @@ public class TCPServer {
       BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
       ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
 
-      pushList.push(false);
-      objectStreams.push(outToClient);
+      pushList.add(false);
+      objectStreams.add(outToClient);
       Runnable r = new ServerThread(threadIndex, connectionSocket, ebd, inFromClient, outToClient);
       new Thread(r).start();
 
