@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class EBookDatabase {
 
-  public final static String LOCATION = "C:\\Users\\Ben\\IdeaProjects\\ass1.networks\\eBook-pages";
+  public final static String LOCATION = "C:\\Users\\Benjamin\\ass1.networks\\eBook-pages";
   public final static int LINES_PER_PAGE = 9;
 
   private ArrayList<EBook> database;
@@ -16,7 +16,7 @@ public class EBookDatabase {
     this.database = new ArrayList<EBook>();
   }
 
-  public EBook getBook(String name) {
+  public synchronized EBook getBook(String name) {
     EBook wrapper = new EBook(name);
     int i = database.indexOf(wrapper);
     if (i > -1) {
@@ -25,16 +25,16 @@ public class EBookDatabase {
     return null;
   }
 
-  public void postComment(String book, int page, int lineNumber, String content) {
+  public synchronized void postComment(String book, int page, int lineNumber, String content) {
     System.out.println("Posting comment in book " + book + " on page " + page + " at line number " + lineNumber);
     getBook(book).postComment(page, lineNumber, content);
   }
 
-  public ResponseComments getCommentsString(String book, int page, int lineNumber, int index) {
+  public synchronized ResponseComments getCommentsString(String book, int page, int lineNumber, int index) {
     return getBook(book).getCommentsString(page, lineNumber, index);
   }
 
-  public void loadAll() {
+  public synchronized void loadAll() {
     File folder = new File(LOCATION);
     for (File fileEntry : folder.listFiles()) {
       String fileName = fileEntry.getName();

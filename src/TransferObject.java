@@ -12,6 +12,7 @@ public class TransferObject implements Serializable {
   public final static int ID_POST = 1;
   public final static int ID_READ = 2;
   public final static int ID_CHECK_NEW_POSTS = 3;
+  public final static int ID_SETUP = 4;
 
   private int id;
 

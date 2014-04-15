@@ -21,7 +21,7 @@ public class ClientProtocol {
     ebccd = new EBookCommentClientDatabase();
   }
 
-  public String parsePre(String userInput) {
+  public synchronized String parsePre(String userInput) {
     String[] parts = userInput.split(" ");
 
     if (parts[0].equals("display")) {
@@ -33,6 +33,8 @@ public class ClientProtocol {
     } else if (parts[0].equals("read_post")) {
       mostRecentQuery = TransferObject.ID_READ;
       reqLine = Integer.parseInt(parts[1]);
+    } else if (parts[0].equals("setup")) {
+      mostRecentQuery = TransferObject.ID_SETUP;
     //this query below never gets called
     } else if (parts[0].equals("check_new_posts")) {
       mostRecentQuery = TransferObject.ID_CHECK_NEW_POSTS;
@@ -41,7 +43,7 @@ public class ClientProtocol {
     return userInput;
   }
 
-  public String parsePost(TransferObject to) {
+  public synchronized String parsePost(TransferObject to) {
     String response = "";
 
     switch(to.getID()) {
@@ -73,6 +75,9 @@ public class ClientProtocol {
         for (int i = 0; i < forum.length; i++) { totalNewPosts += forum[i].length; }
         int totalOldPosts = ebccd.getForum(currentBook, currentPage).getTotalPosts();
         response = (totalOldPosts == totalNewPosts) ? "There are no new posts" : "There are new posts.";
+        break;
+
+      case TransferObject.ID_SETUP:
         break;
 
       default:

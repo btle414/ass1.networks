@@ -8,14 +8,20 @@ import java.net.Socket;
  */
 public class ServerThread implements Runnable {
 
+  private int threadIndex;
   private Socket socket;
   private EBookDatabase ebd;
   private ServerProtocol protocol;
+  private BufferedReader inFromClient;
+  private ObjectOutputStream outToClient;
 
-  public ServerThread(Socket socket, EBookDatabase ebd) {
+  public ServerThread(int threadIndex, Socket socket, EBookDatabase ebd, BufferedReader inFromClient, ObjectOutputStream outToClient) {
+    this.threadIndex = threadIndex;
     this.socket = socket;
     this.ebd = ebd;
-    this.protocol = new ServerProtocol(ebd);
+    this.protocol = new ServerProtocol(threadIndex, ebd);
+    this.inFromClient = inFromClient;
+    this.outToClient = outToClient;
   }
 
   @Override
@@ -28,9 +34,6 @@ public class ServerThread implements Runnable {
   }
 
   public void newConnection() throws Exception {
-    // create read stream to get input
-    BufferedReader inFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    ObjectOutputStream outToClient = new ObjectOutputStream(socket.getOutputStream());
     String clientSentence;
     while (true) {
       System.out.println("Waiting for input");
@@ -43,7 +46,7 @@ public class ServerThread implements Runnable {
     }
   }
 
-  public void execute(String input, ObjectOutputStream out) {
+  public synchronized void execute(String input, ObjectOutputStream out) {
     TransferObject outputObj = protocol.parse(input);
 
     try {

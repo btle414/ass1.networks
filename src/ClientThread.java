@@ -34,6 +34,10 @@ public class ClientThread {
       System.out.println("Failed to instantiate required buffers.");
     }
 
+    //start input stream
+    Runnable r = new ClientReceiverThread(protocol, inFromServer);
+    new Thread(r).start();
+
     while (true) {
       // get input from keyboard
       String sentence = "";
@@ -82,22 +86,6 @@ public class ClientThread {
     } catch (IOException ioe) {
       System.out.println("Failed to write user input.");
     }
-
-    // create read stream and receive from server
-    TransferObject obj = null;
-    try {
-      obj = (TransferObject) inFromServer.readObject();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    String output = protocol.parsePost(obj);
-
-    // print output
-    //System.out.println("===== FROM SERVER ==== ");
-    System.out.println(output);
 
   }
 }

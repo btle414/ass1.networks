@@ -1,10 +1,17 @@
 import Server.EBook.EBookDatabase;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.net.*;
+import java.util.LinkedList;
 
 public class TCPServer {
 
   public static EBookDatabase ebd = new EBookDatabase();
+  public static final LinkedList<Boolean> pushList = new LinkedList<Boolean>();
+  public static final LinkedList<ObjectOutputStream> objectStreams = new LinkedList<ObjectOutputStream>();
+  public static int threadIndex = 0;
 
   public static void main(String[] args) throws Exception {
     //mine
@@ -27,8 +34,16 @@ public class TCPServer {
 
       System.out.println("connection from " + connectionSocket);
 
-      Runnable r = new ServerThread(connectionSocket, ebd);
+      // create read stream to get input
+      BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+      ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
+
+      pushList.push(false);
+      objectStreams.push(outToClient);
+      Runnable r = new ServerThread(threadIndex, connectionSocket, ebd, inFromClient, outToClient);
       new Thread(r).start();
+
+      threadIndex++;
 
     } // end of while (true)
 

@@ -5,20 +5,12 @@ public class TCPClient {
 
   public static void main(String[] args) throws Exception {
 
-    // get server address
-    String serverName = "localhost";
-    if (args.length >= 1)
-      serverName = args[0];
-    InetAddress serverIPAddress = InetAddress.getByName(serverName);
+    Arguments a = new Arguments(args);
 
-    // get server port
-    int serverPort = 6789;
-    //change above port number if required
-    if (args.length >= 2)
-      serverPort = Integer.parseInt(args[1]);
+    InetAddress serverIPAddress = InetAddress.getByName(a.getAddress());
 
     // create socket which connects to server
-    Socket clientSocket = new Socket(serverIPAddress, serverPort);
+    Socket clientSocket = new Socket(serverIPAddress, a.getPort());
 
     ClientThread ct = new ClientThread(clientSocket);
     ct.execute();

@@ -10,12 +10,16 @@ import java.util.LinkedList;
  */
 public class ServerProtocol {
 
+  private int threadIndex;
   private EBookDatabase ebd;
   private EBookState state;
+  private boolean isPushMode;
 
-  public ServerProtocol(EBookDatabase ebd) {
+  public ServerProtocol(int threadIndex, EBookDatabase ebd) {
+    this.threadIndex = threadIndex;
     this.ebd = ebd;
     this.state = new EBookState();
+    isPushMode = false;
   }
 
   //parse client message and return the response to send back to the client
@@ -40,7 +44,12 @@ public class ServerProtocol {
     else if (parts[0].equals("check_new_posts")) {
       tf = parseDisplay(parts[1], Integer.parseInt(parts[2]));
       tf.setID(TransferObject.ID_CHECK_NEW_POSTS);
+
+
+    } else if (parts[0].equals("setup")) {
+      tf = parseSetup(parts[1]);
     }
+
 
     System.out.println("Returning ID: " + tf.getID());
     return tf;
@@ -69,6 +78,15 @@ public class ServerProtocol {
 
     LinkedList<String> listComments = rc.getComments();
     TransferObject to = new TransferObject(TransferObject.ID_READ, null, ebd.getBook(state.getLastKnownBook()).getPage(state.getLastKnownPage()).getForum().convertForumToStrMArray());
+    return to;
+  }
+
+  private TransferObject parseSetup(String mode) {
+    if (mode.equals("push")) {
+      TCPServer.pushList.set(threadIndex, true);
+      isPushMode = true;
+    }
+    TransferObject to = new TransferObject(TransferObject.ID_SETUP);
     return to;
   }
 }
