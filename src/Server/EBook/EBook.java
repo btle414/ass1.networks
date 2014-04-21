@@ -1,6 +1,8 @@
 package Server.EBook;
 
-import java.util.ArrayList;
+import Server.ResponseComments;
+
+import java.util.HashMap;
 
 /**
  * Created by ben on 29/03/14.
@@ -8,11 +10,15 @@ import java.util.ArrayList;
 public class EBook {
 
   private String name;
-  private ArrayList<EBookPage> pages;
+  //private ArrayList<EBookPage> pages;
+  private HashMap<Integer, EBookPage> pages;
+  private int numPages;
 
   public EBook(String name) {
     this.name = name;
-    this.pages = new ArrayList<EBookPage>();
+    this.pages = new HashMap<Integer, EBookPage>();
+    this.numPages = 0;
+    //this.pages = new ArrayList<EBookPage>();
   }
 
   public String getName() {
@@ -20,7 +26,10 @@ public class EBook {
   }
 
   public void addPage(int pageNum, String[] text) {
-    this.pages.add(new EBookPage(pageNum, text));
+    if (pages.containsKey(pageNum)) return;
+    pages.put(pageNum, new EBookPage(pageNum, text));
+    numPages++;
+    //this.pages.add(new EBookPage(pageNum, text));
   }
 
   public int getNumPages() {
@@ -28,7 +37,7 @@ public class EBook {
   }
 
   public EBookPage getPage(int pageNum) {
-    if (pageNum < 0 || pageNum >= this.pages.size()) return null;
+    if (!pages.containsKey(pageNum)) return null;
     return pages.get(pageNum);
   }
 

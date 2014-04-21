@@ -2,12 +2,14 @@ package Server.EBook; /**
  * Created by ben on 29/03/14.
  */
 
+import Server.ResponseComments;
+
 import java.io.*;
 import java.util.ArrayList;
 
 public class EBookDatabase {
 
-  public final static String LOCATION = "C:\\Users\\Benjamin\\ass1.networks\\eBook-pages";
+  public final static String LOCATION = "eBook-pages/";
   public final static int LINES_PER_PAGE = 9;
 
   private ArrayList<EBook> database;

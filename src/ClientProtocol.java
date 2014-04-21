@@ -1,8 +1,6 @@
 import Client.EBookCommentClientDatabase;
-import Server.EBook.EBookDatabase;
-import Server.EBook.EBookForum;
 import Server.EBook.EBookLineForum;
-import Server.EBook.ResponseComments;
+import Server.ResponseComments;
 
 import java.util.LinkedList;
 
@@ -113,7 +111,6 @@ public class ClientProtocol {
           if (!ebccd.exists(book)) ebccd.createForum(book);
           ebccd.getForum(book, page).postComment(line, comment);
           response = (mostRecentQuery == TransferObject.ID_TEXT && currentBook.equals(book) && currentPage == page) ? "There are new posts." : "";
-          System.out.println("Received post (" + book + ", " + page + ", " + line + ", " + comment + ")");
         }
 
       default:

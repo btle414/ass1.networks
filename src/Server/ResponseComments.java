@@ -1,4 +1,4 @@
-package Server.EBook;
+package Server;
 
 import java.util.LinkedList;
 

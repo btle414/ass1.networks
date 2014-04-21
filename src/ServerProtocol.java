@@ -1,7 +1,7 @@
 import Server.EBook.*;
+import Server.ResponseComments;
 
 import java.io.IOException;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -68,6 +68,8 @@ public class ServerProtocol {
   }
 
   private TransferObject parseDisplay(String book, int page) {
+    System.out.println(name + " requests book " + book + ", page " + page);
+
     state.setLastKnownBook(book);
     state.setLastKnownPage(page);
 
@@ -111,6 +113,7 @@ public class ServerProtocol {
   }
 
   private TransferObject parseReadPost(int lineNumber) {
+    System.out.println(name + " requests posts for book " + state.getLastKnownBook() + ", page " + state.getLastKnownPage() + ", line number " + lineNumber);
     //ResponseComments rc = ebd.getCommentsString(state.getLastKnownBook(), state.getLastKnownPage(), lineNumber, state.getLastFetchedComments());
     ResponseComments rc = ebd.getCommentsString(state.getLastKnownBook(), state.getLastKnownPage(), lineNumber, 0);
     state.setLastFetchedComments(rc.getIndex());
@@ -121,9 +124,13 @@ public class ServerProtocol {
   }
 
   private TransferObject parseSetup(String mode, String name) {
+    System.out.println("User " + name + " connecting with mode " + mode + ".");
+
     TransferObject to = new TransferObject(TransferObject.ID_SETUP);
     this.name = name;
     if (mode.equals("push")) {
+      System.out.println("User " + name + " added to the push list.");
+
       TCPServer.pushList.set(threadIndex, true);
       isPushMode = true;
 
@@ -135,7 +142,9 @@ public class ServerProtocol {
           for (int j = 0; j < ebd.LINES_PER_PAGE; j++) {
             ResponseComments rc = eb.getCommentsString(i, j, 0);
 
+            int counter = 0;
             for (String s : rc.getComments()) {
+              System.out.println("Sending post (" + eb.getName() + ", " + i + ", " + j + ", " + counter + ") to user " + name);
               TransferObject outputObj = new TransferObject(TransferObject.ID_PUSH_POST, eb.getName(), i, j, s);
 
               try {
@@ -144,13 +153,15 @@ public class ServerProtocol {
               } catch (IOException ioe) {
                 System.out.println("Failed to push to client.");
               }
+
+              counter++;
             }
 
           }
         }
       }
     }
-    System.out.println("User '" + name + "' connecting with mode '" + mode + "'.");
+
     return to;
   }
 }

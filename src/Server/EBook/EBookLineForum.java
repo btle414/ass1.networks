@@ -1,7 +1,8 @@
 package Server.EBook;
 
+import Server.ResponseComments;
+
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**

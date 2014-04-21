@@ -1,5 +1,7 @@
 package Server.EBook;
 
+import Server.ResponseComments;
+
 /**
  * Created by ben on 29/03/14.
  */

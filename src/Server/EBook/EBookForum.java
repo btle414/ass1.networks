@@ -1,5 +1,7 @@
 package Server.EBook;
 
+import Server.ResponseComments;
+
 import java.io.Serializable;
 
 /**
