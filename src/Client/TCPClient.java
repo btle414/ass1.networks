@@ -1,9 +1,12 @@
-import java.io.*;
+package Client;
+
+import Shared.Arguments;
+
 import java.net.*;
 
 public class TCPClient {
 
-  public static void main(String[] args) throws Exception {
+  public void run(String[] args) throws Exception {
 
     Arguments a = new Arguments(args);
 
@@ -20,4 +23,4 @@ public class TCPClient {
 
   } // end of main
 
-} // end of class TCPClient
+} // end of class Client.TCPClient

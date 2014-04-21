@@ -1,4 +1,4 @@
-import Server.EBook.EBookForum;
+package Shared;
 
 import java.io.Serializable;
 
@@ -19,14 +19,15 @@ public class TransferObject implements Serializable {
 
   //associated with text
   private String[] lines;
-  private String[][] commentsPerLine;
+  private String[][][] commentsPerLine; //[page][line][0=author, 1=comment]
 
   //associated with push post
   private String pushBook;
   private int pushPage;
   private int pushLineNumber;
+  private String pushAuthor;
   //private int commentIndex; //we can assume because of TCP, there is order
-  private String comment;
+  private String pushComment;
 
   public TransferObject() {
     this.id = ID_DEFAULT;
@@ -39,7 +40,7 @@ public class TransferObject implements Serializable {
     this.id = id;
   }
 
-  public TransferObject(int id, String[] lines, String[][] commentsPerLine) {
+  public TransferObject(int id, String[] lines, String[][][] commentsPerLine) {
     this();
     this.id = id;
     this.lines = lines;
@@ -47,13 +48,14 @@ public class TransferObject implements Serializable {
   }
 
   //push constructor
-  public TransferObject(int id, String pushBook, int pushPage, int pushLineNumber, String comment) {
+  public TransferObject(int id, String pushBook, int pushPage, int pushLineNumber, String pushAuthor, String comment) {
     this();
     this.id = id;
     this.pushBook = pushBook;
     this.pushPage = pushPage;
     this.pushLineNumber = pushLineNumber;
-    this.comment = comment;
+    this.pushAuthor = pushAuthor;
+    this.pushComment = comment;
   }
 
   public int getID() {
@@ -64,7 +66,7 @@ public class TransferObject implements Serializable {
     this.id = id;
   }
 
-  public String[][] getForum() {
+  public String[][][] getForum() {
     return commentsPerLine;
   }
 
@@ -78,8 +80,10 @@ public class TransferObject implements Serializable {
     return to;
   }
 
-  public String getComment() {
-    return comment;
+  public String getPushAuthor() { return pushAuthor; }
+
+  public String getPushComment() {
+    return pushComment;
   }
 
   public String getPushBook() {

@@ -1,4 +1,4 @@
-package Server;
+package EBook;
 
 import java.util.LinkedList;
 
@@ -8,22 +8,22 @@ import java.util.LinkedList;
 public class ResponseComments {
 
   private int index;
-  private LinkedList<String> comments;
+  private LinkedList<EBookComment> comments;
 
   public ResponseComments() {
     index = 0;
-    comments = new LinkedList<String>();
+    comments = new LinkedList<EBookComment>();
   }
 
-  public void addMessage(String comment) {
-    comments.add(comment);
+  public void addMessage(int index, String author, String comment) {
+    comments.add(new EBookComment(index, author, comment));
   }
 
   public int getIndex() {
     return index;
   }
 
-  public LinkedList<String> getComments() {
+  public LinkedList<EBookComment> getComments() {
     return comments;
   }
 
@@ -36,8 +36,9 @@ public class ResponseComments {
     String str = "";
     int numComments = comments.size();
     int i = 1;
-    for (String s : comments) {
-      str += (index-numComments+i) + " " + s + '\n';
+    for (EBookComment s : comments) {
+      //str += (index - numComments + i) + " " + s + '\n';
+      str += s.index + " " + s.author + ": " + s.message + '\n';
       i++;
     }
 

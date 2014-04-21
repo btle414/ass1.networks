@@ -1,6 +1,8 @@
-import Client.EBookCommentClientDatabase;
-import Server.EBook.EBookLineForum;
-import Server.ResponseComments;
+package Client;
+
+import EBook.EBookLineForum;
+import EBook.ResponseComments;
+import Shared.TransferObject;
 
 import java.util.LinkedList;
 
@@ -74,13 +76,13 @@ public class ClientProtocol {
 
       //update database when this is called
       case TransferObject.ID_READ:
-        response = "-----Comments-----\n";
+        response = "Book by " + currentBook + ", Page " + currentPage + ", Line number " + reqLine + ":\n";
         EBookLineForum eblf = ebccd.getForum(currentBook, currentPage).getLineForum(reqLine);
         int allCommentLen = to.getForum()[reqLine].length;
         for (int i = (isPush) ? eblf.getIndex() : eblf.getNumComments(); i < allCommentLen; i++) {
-          String str = to.getForum()[reqLine][i];
-          if (!isPush) eblf.postComment(str);
-          response += str + '\n';
+          String[] str = to.getForum()[reqLine][i];
+          if (!isPush) eblf.postComment(str[0], str[1]);
+          response += i + " " + str[0] + ": " + str[1] + '\n';
         }
         ebccd.getForum(currentBook, currentPage).getLineForum(reqLine).setIndex(allCommentLen);
         break;
@@ -89,7 +91,7 @@ public class ClientProtocol {
       case TransferObject.ID_CHECK_NEW_POSTS:
         if (!isPush) {
           int totalNewPosts = 0;
-          String[][] forum = to.getForum();
+          String[][][] forum = to.getForum();
           for (int i = 0; i < forum.length; i++) {
             totalNewPosts += forum[i].length;
           }
@@ -106,10 +108,11 @@ public class ClientProtocol {
           String book = to.getPushBook();
           int page = to.getPushPage();
           int line = to.getPushLineNumber();
-          String comment = to.getComment();
+          String author = to.getPushAuthor();
+          String comment = to.getPushComment();
 
           if (!ebccd.exists(book)) ebccd.createForum(book);
-          ebccd.getForum(book, page).postComment(line, comment);
+          ebccd.getForum(book, page).postComment(line, author, comment);
           response = (mostRecentQuery == TransferObject.ID_TEXT && currentBook.equals(book) && currentPage == page) ? "There are new posts." : "";
         }
 
@@ -120,15 +123,12 @@ public class ClientProtocol {
   }
 
   public void printLocalPosts() {
-    String response = "-----Comments-----\n";
+    String response = "Book by " + currentBook + ", Page " + currentPage + ", Line number " + reqLine + ":\n";
     EBookLineForum eblf = ebccd.getForum(currentBook, currentPage).getLineForum(reqLine);
     int allCommentLen = eblf.getNumComments();
     int readIndex = eblf.getIndex();
     ResponseComments rc = eblf.getCommentsString(readIndex);
-    LinkedList<String> comments = rc.getComments();
-    for (String comment : comments) {
-      response += comment + '\n';
-    }
+    response = rc.toString();
     eblf.setIndex(allCommentLen);
     System.out.println(response);
   }

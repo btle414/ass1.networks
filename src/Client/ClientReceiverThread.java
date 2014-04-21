@@ -1,3 +1,7 @@
+package Client;
+
+import Shared.TransferObject;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 

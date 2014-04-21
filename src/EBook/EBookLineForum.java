@@ -1,6 +1,4 @@
-package Server.EBook;
-
-import Server.ResponseComments;
+package EBook;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -19,12 +17,12 @@ public class EBookLineForum implements Serializable {
     index = 0;
   }
 
-  public void postComment(String content) {
-    comments.add(new EBookComment(content));
+  public void postComment(String author, String content) {
+    comments.add(new EBookComment(comments.size(), author, content));
   }
 
-  public void postCommentWithUpdate(String content) {
-    postComment(content);
+  public void postCommentWithUpdate(String author, String content) {
+    postComment(author, content);
     index++;
   }
 
@@ -38,18 +36,19 @@ public class EBookLineForum implements Serializable {
     for (EBookComment ebc : comments) {
       i++;
       if (i < index) continue;
-      rc.addMessage(ebc.message);
+      rc.addMessage(i, ebc.author, ebc.message);
     }
     rc.setIndex(comments.size());
 
     return rc;
   }
 
-  public String[] getSerializableComments() {
-    String[] strs = new String[comments.size()];
+  public String[][] getSerializableComments() {
+    String[][] strs = new String[comments.size()][2];
     int i = 0;
     for (EBookComment ebc : comments) {
-      strs[i] = ebc.message;
+      strs[i][0] = ebc.author;
+      strs[i][1] = ebc.message;
       i++;
     }
 

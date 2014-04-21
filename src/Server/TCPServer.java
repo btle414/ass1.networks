@@ -1,4 +1,4 @@
-import Server.EBook.EBookDatabase;
+package Server;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,7 +13,7 @@ public class TCPServer {
   public static final LinkedList<ObjectOutputStream> objectStreams = new LinkedList<ObjectOutputStream>();
   public static int threadIndex = 0;
 
-  public static void main(String[] args) throws Exception {
+  public static void run(String[] args) throws Exception {
 
     // see if we do not use default server port
     int serverPort = 6789;
@@ -51,4 +51,4 @@ public class TCPServer {
 
   } // end of main()
 
-} // end of class TCPServer
+} // end of class Server.TCPServer

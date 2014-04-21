@@ -1,8 +1,9 @@
-package Server.EBook; /**
+package Server; /**
  * Created by ben on 29/03/14.
  */
 
-import Server.ResponseComments;
+import EBook.EBook;
+import EBook.ResponseComments;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -31,9 +32,9 @@ public class EBookDatabase {
     return database;
   }
 
-  public synchronized void postComment(String book, int page, int lineNumber, String content) {
+  public synchronized void postComment(String book, int page, int lineNumber, String author, String content) {
     System.out.println("Posting comment in book " + book + " on page " + page + " at line number " + lineNumber);
-    getBook(book).postComment(page, lineNumber, content);
+    getBook(book).postComment(page, lineNumber, author, content);
   }
 
   public synchronized ResponseComments getCommentsString(String book, int page, int lineNumber, int index) {
@@ -57,7 +58,7 @@ public class EBookDatabase {
           start++;
         }
       } catch (IOException io) {
-        System.out.println("Server.EBook.EBookDatabase: read file failed");
+        System.out.println("Server.EBookDatabase: read file failed");
       }
 
       EBook book = getBook(info[0]);

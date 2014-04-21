@@ -1,3 +1,5 @@
+package Shared;
+
 /**
  * Created by ben on 29/03/14.
  */

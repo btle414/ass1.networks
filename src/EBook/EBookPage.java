@@ -1,6 +1,4 @@
-package Server.EBook;
-
-import Server.ResponseComments;
+package EBook;
 
 /**
  * Created by ben on 29/03/14.
@@ -29,8 +27,8 @@ public class EBookPage {
     return forum;
   }
 
-  public void postComment(int lineNumber, String content) {
-    forum.postComment(lineNumber, content);
+  public void postComment(int lineNumber, String author, String content) {
+    forum.postComment(lineNumber, author, content);
   }
 
   public ResponseComments getCommentsString(int lineNumber, int index) {

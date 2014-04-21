@@ -1,10 +1,12 @@
-import Server.EBook.*;
-import Server.ResponseComments;
+package Server;
+
+import EBook.*;
+import EBook.ResponseComments;
+import Shared.TransferObject;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * Created by Ben on 12/04/2014.
@@ -80,7 +82,7 @@ public class ServerProtocol {
 
   private TransferObject parsePostToForum(int lineNumber, String content) {
     System.out.println("New post received from " + name + ".");
-    ebd.postComment(state.getLastKnownBook(), state.getLastKnownPage(), lineNumber, content);
+    ebd.postComment(state.getLastKnownBook(), state.getLastKnownPage(), lineNumber, name, content);
     System.out.println("Post added to the database and given serial number (" + state.getLastKnownBook() + ", " + state.getLastKnownPage() + ", " + lineNumber + ", " + ebd.getBook(state.getLastKnownBook()).getPage(state.getLastKnownPage()).getForum().getLineForum(lineNumber).getNumComments() + ").");
 
     TransferObject to = new TransferObject(TransferObject.ID_POST, null, ebd.getBook(state.getLastKnownBook()).getPage(state.getLastKnownPage()).getForum().convertForumToStrMArray());
@@ -93,7 +95,7 @@ public class ServerProtocol {
       //change to iterator
       //also this is quite hacky abstraction
       if (TCPServer.pushList.get(index)) {
-        TransferObject outputObj = new TransferObject(TransferObject.ID_PUSH_POST, state.getLastKnownBook(), state.getLastKnownPage(), lineNumber, content);
+        TransferObject outputObj = new TransferObject(TransferObject.ID_PUSH_POST, state.getLastKnownBook(), state.getLastKnownPage(), lineNumber, name, content);
 
         try {
           oos.writeObject(outputObj);
@@ -118,7 +120,6 @@ public class ServerProtocol {
     ResponseComments rc = ebd.getCommentsString(state.getLastKnownBook(), state.getLastKnownPage(), lineNumber, 0);
     state.setLastFetchedComments(rc.getIndex());
 
-    LinkedList<String> listComments = rc.getComments();
     TransferObject to = new TransferObject(TransferObject.ID_READ, null, ebd.getBook(state.getLastKnownBook()).getPage(state.getLastKnownPage()).getForum().convertForumToStrMArray());
     return to;
   }
@@ -139,13 +140,14 @@ public class ServerProtocol {
       for (EBook eb : allBooks) {
         int pages = eb.getNumPages();
         for (int i = 0; i < pages; i++) {
+          if (eb.getPage(i) == null) continue;
           for (int j = 0; j < ebd.LINES_PER_PAGE; j++) {
             ResponseComments rc = eb.getCommentsString(i, j, 0);
 
-            int counter = 0;
-            for (String s : rc.getComments()) {
+            int counter = 1;
+            for (EBookComment ebc : rc.getComments()) {
               System.out.println("Sending post (" + eb.getName() + ", " + i + ", " + j + ", " + counter + ") to user " + name);
-              TransferObject outputObj = new TransferObject(TransferObject.ID_PUSH_POST, eb.getName(), i, j, s);
+              TransferObject outputObj = new TransferObject(TransferObject.ID_PUSH_POST, eb.getName(), i, j, ebc.author, ebc.message);
 
               try {
                 outToClient.writeObject(outputObj);

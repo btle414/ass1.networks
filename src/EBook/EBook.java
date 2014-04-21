@@ -1,6 +1,4 @@
-package Server.EBook;
-
-import Server.ResponseComments;
+package EBook;
 
 import java.util.HashMap;
 
@@ -41,8 +39,8 @@ public class EBook {
     return pages.get(pageNum);
   }
 
-  public void postComment(int page, int pageLineNumber, String content) {
-    pages.get(page).postComment(pageLineNumber, content);
+  public void postComment(int page, int pageLineNumber, String author, String content) {
+    pages.get(page).postComment(pageLineNumber, author, content);
   }
 
   public ResponseComments getCommentsString(int page, int lineNumber, int index) {

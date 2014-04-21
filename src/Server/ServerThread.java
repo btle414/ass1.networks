@@ -1,4 +1,6 @@
-import Server.EBook.EBookDatabase;
+package Server;
+
+import Shared.TransferObject;
 
 import java.io.*;
 import java.net.Socket;

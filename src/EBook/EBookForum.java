@@ -1,6 +1,6 @@
-package Server.EBook;
+package EBook;
 
-import Server.ResponseComments;
+import Server.EBookDatabase;
 
 import java.io.Serializable;
 
@@ -26,16 +26,16 @@ public class EBookForum implements Serializable {
     return lines[lineNumber].getCommentsString(index);
   }
 
-  public void postComment(int lineNumber, String content) {
-    lines[lineNumber].postComment(content);
+  public void postComment(int lineNumber, String author, String content) {
+    lines[lineNumber].postComment(author, content);
   }
 
-  public void postCommentWithUpdate(int lineNumber, String content) {
-    lines[lineNumber].postCommentWithUpdate(content);
+  public void postCommentWithUpdate(int lineNumber, String author, String content) {
+    lines[lineNumber].postCommentWithUpdate(author, content);
   }
 
-  public String[][] convertForumToStrMArray() {
-    String[][] forum = new String[lines.length][];
+  public String[][][] convertForumToStrMArray() {
+    String[][][] forum = new String[lines.length][][];
     for (int i = 0; i < lines.length; i++) {
       forum[i] = lines[i].getSerializableComments();
     }

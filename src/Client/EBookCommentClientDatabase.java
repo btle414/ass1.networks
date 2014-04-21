@@ -1,8 +1,7 @@
 package Client;
 
-import Server.EBook.EBookDatabase;
-import Server.EBook.EBookForum;
-import Server.EBook.EBookLineForum;
+import Server.EBookDatabase;
+import EBook.EBookForum;
 
 import java.util.HashMap;
 
@@ -38,7 +37,7 @@ public class EBookCommentClientDatabase {
     return db.get(book)[page];
   }
 
-  public char[] hasNewPosts(String book, int page, String[][] newForum) {
+  public char[] hasNewPosts(String book, int page, String[][][] newForum) {
     char[] hasLineNewPosts = new char[EBookDatabase.LINES_PER_PAGE+1];
     if (!exists(book)) createForum(book);
     EBookForum oldForum = db.get(book)[page];

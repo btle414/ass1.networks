@@ -1,4 +1,4 @@
-package Server.EBook;
+package EBook;
 
 /**
  * Created by Ben on 12/04/14.
