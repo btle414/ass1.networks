@@ -15,12 +15,14 @@ public class ClientThread {
   private String pollSentence;
   private Timer poll;
   private String mode;
+  private String name;
 
-  public ClientThread(Socket socket, String mode) {
+  public ClientThread(Socket socket, String mode, String name) {
     clientSocket = socket;
     protocol = new ClientProtocol();
     poll = new Timer();
     this.mode = mode;
+    this.name = name;
   }
 
   public void execute() {
@@ -40,7 +42,7 @@ public class ClientThread {
     Runnable r = new ClientReceiverThread(protocol, inFromServer);
     new Thread(r).start();
 
-    writeAndExpectResponse(protocol, outToServer, inFromServer, protocol.parsePre("setup " + mode));
+    writeOut(protocol, outToServer, inFromServer, protocol.parsePre("setup " + mode + " " + name));
 
     while (true) {
       // get input from keyboard
@@ -66,23 +68,23 @@ public class ClientThread {
         @Override
         public void run() {
           //System.out.println("Polling.");
-          writeAndExpectResponse(protocol, outToServer, inFromServer, pollSentence);
+          writeOut(protocol, outToServer, inFromServer, pollSentence);
         }
       }
 
       sentence = protocol.parsePre(sentence);
-      if (protocol.isPollSentence(sentence)) {
+      if (!protocol.isPush() && protocol.isPollSentence(sentence)) {
         poll.cancel();
         poll = new Timer();
         poll.scheduleAtFixedRate(new PollTimerTask(outToServer, inFromServer, protocol.getPollSentence()), TIMEOUT_INTERVAL_SECONDS*1000, TIMEOUT_INTERVAL_SECONDS*1000);
       }
 
-      if (!sentence.isEmpty()) writeAndExpectResponse(protocol, outToServer, inFromServer, sentence);
+      if (!sentence.isEmpty()) writeOut(protocol, outToServer, inFromServer, sentence);
 
     }
   }
 
-  public static void writeAndExpectResponse(ClientProtocol protocol, DataOutputStream outToServer, ObjectInputStream inFromServer, String sentence) {
+  public void writeOut(ClientProtocol protocol, DataOutputStream outToServer, ObjectInputStream inFromServer, String sentence) {
     // write to server
     try {
       outToServer.writeBytes(sentence + '\n');

@@ -1,11 +1,9 @@
-import Server.EBook.EBookDatabase;
-import Server.EBook.EBookPage;
-import Server.EBook.EBookState;
-import Server.EBook.ResponseComments;
+import Server.EBook.*;
 
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -17,12 +15,20 @@ public class ServerProtocol {
   private EBookDatabase ebd;
   private EBookState state;
   private boolean isPushMode;
+  private String name;
+  private ObjectOutputStream outToClient;
 
-  public ServerProtocol(int threadIndex, EBookDatabase ebd) {
+  public ServerProtocol(int threadIndex, EBookDatabase ebd, ObjectOutputStream outToClient) {
     this.threadIndex = threadIndex;
     this.ebd = ebd;
     this.state = new EBookState();
-    isPushMode = false;
+    this.isPushMode = false;
+    this.name = "";
+    this.outToClient = outToClient;
+  }
+
+  public String getName() {
+    return name;
   }
 
   //parse client message and return the response to send back to the client
@@ -30,31 +36,34 @@ public class ServerProtocol {
     TransferObject tf = new TransferObject();
     String[] parts = message.split(" ");
 
-    if (parts[0].equals("display")) tf = parseDisplay(parts[1], Integer.parseInt(parts[2]));
+    if (parts[0].equals("display")) {
+      tf = parseDisplay(parts[1], Integer.parseInt(parts[2]));
 
-    else if (parts[0].equals("post_to_forum")) {
+    } else if (parts[0].equals("post_to_forum")) {
       int lineNumber = Integer.parseInt(parts[1]);
       String content = "";
       for (int i = 2; i < parts.length; i++) {
         content += parts[i] + " ";
       }
-      ;
       content.substring(0, content.length() - 1);
       tf = parsePostToForum(lineNumber, content);
 
-    } else if (parts[0].equals("read_post")) tf = parseReadPost(Integer.parseInt(parts[1]));
+    } else if (parts[0].equals("read_post")) {
+      tf = parseReadPost(Integer.parseInt(parts[1]));
 
-    else if (parts[0].equals("check_new_posts")) {
+    } else if (parts[0].equals("check_new_posts")) {
       tf = parseDisplay(parts[1], Integer.parseInt(parts[2]));
       tf.setID(TransferObject.ID_CHECK_NEW_POSTS);
 
 
     } else if (parts[0].equals("setup")) {
-      tf = parseSetup(parts[1]);
+      String name = "";
+      for (int i = 2; i < parts.length; i++) {
+        name += parts[i] + " ";
+      }
+      tf = parseSetup(parts[1], name);
     }
 
-
-    System.out.println("Returning ID: " + tf.getID());
     return tf;
   }
 
@@ -68,12 +77,15 @@ public class ServerProtocol {
   }
 
   private TransferObject parsePostToForum(int lineNumber, String content) {
+    System.out.println("New post received from " + name + ".");
     ebd.postComment(state.getLastKnownBook(), state.getLastKnownPage(), lineNumber, content);
+    System.out.println("Post added to the database and given serial number (" + state.getLastKnownBook() + ", " + state.getLastKnownPage() + ", " + lineNumber + ", " + ebd.getBook(state.getLastKnownBook()).getPage(state.getLastKnownPage()).getForum().getLineForum(lineNumber).getNumComments() + ").");
 
     TransferObject to = new TransferObject(TransferObject.ID_POST, null, ebd.getBook(state.getLastKnownBook()).getPage(state.getLastKnownPage()).getForum().convertForumToStrMArray());
 
     //now push the new comment to every possible person
     int index = 0;
+    int numPushes = 0;
     for (ObjectOutputStream oos : TCPServer.objectStreams) {
       //TODO THIS IS VERY SLOW
       //change to iterator
@@ -87,9 +99,14 @@ public class ServerProtocol {
         } catch (IOException ioe) {
           System.out.println("Failed to push to client.");
         }
+
+        numPushes++;
       }
       index++;
     }
+
+    if (numPushes == 0) System.out.println("Push list empty. No action required.");
+    else System.out.println("Pushing to " + numPushes + " clients");
     return to;
   }
 
@@ -103,13 +120,37 @@ public class ServerProtocol {
     return to;
   }
 
-  private TransferObject parseSetup(String mode) {
+  private TransferObject parseSetup(String mode, String name) {
+    TransferObject to = new TransferObject(TransferObject.ID_SETUP);
+    this.name = name;
     if (mode.equals("push")) {
-      System.out.println("PUSH MODE ENGAGED");
       TCPServer.pushList.set(threadIndex, true);
       isPushMode = true;
+
+      //push all psots
+      ArrayList<EBook> allBooks = ebd.getDatabase();
+      for (EBook eb : allBooks) {
+        int pages = eb.getNumPages();
+        for (int i = 0; i < pages; i++) {
+          for (int j = 0; j < ebd.LINES_PER_PAGE; j++) {
+            ResponseComments rc = eb.getCommentsString(i, j, 0);
+
+            for (String s : rc.getComments()) {
+              TransferObject outputObj = new TransferObject(TransferObject.ID_PUSH_POST, eb.getName(), i, j, s);
+
+              try {
+                outToClient.writeObject(outputObj);
+                outToClient.flush();
+              } catch (IOException ioe) {
+                System.out.println("Failed to push to client.");
+              }
+            }
+
+          }
+        }
+      }
     }
-    TransferObject to = new TransferObject(TransferObject.ID_SETUP);
+    System.out.println("User '" + name + "' connecting with mode '" + mode + "'.");
     return to;
   }
 }

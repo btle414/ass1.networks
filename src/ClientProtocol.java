@@ -2,6 +2,9 @@ import Client.EBookCommentClientDatabase;
 import Server.EBook.EBookDatabase;
 import Server.EBook.EBookForum;
 import Server.EBook.EBookLineForum;
+import Server.EBook.ResponseComments;
+
+import java.util.LinkedList;
 
 /**
  * Created by Ben on 13/04/2014.
@@ -23,8 +26,13 @@ public class ClientProtocol {
     isPush = false;
   }
 
+  public boolean isPush() {
+    return isPush;
+  }
+
   public synchronized String parsePre(String userInput) {
     String[] parts = userInput.split(" ");
+    String parsed = userInput;
 
     if (parts[0].equals("display")) {
       currentBook = parts[1];
@@ -35,10 +43,13 @@ public class ClientProtocol {
     } else if (parts[0].equals("read_post")) {
       mostRecentQuery = TransferObject.ID_READ;
       reqLine = Integer.parseInt(parts[1]);
+      if (isPush) {
+        parsed = "";
+        printLocalPosts();
+      }
     } else if (parts[0].equals("setup")) {
       mostRecentQuery = TransferObject.ID_SETUP;
       if (parts[1].equals("push")) {
-        System.out.println("PUSH MODE ENGAGED");
         isPush = true;
       }
     //this query below never gets called
@@ -46,7 +57,7 @@ public class ClientProtocol {
       mostRecentQuery = TransferObject.ID_CHECK_NEW_POSTS;
     }
 
-    return userInput;
+    return parsed;
   }
 
   public synchronized String parsePost(TransferObject to) {
@@ -94,14 +105,35 @@ public class ClientProtocol {
 
       case TransferObject.ID_PUSH_POST:
         if (isPush) {
-          ebccd.getForum(to.getPushBook(), to.getPushPage()).postComment(to.getPushLineNumber(), to.getComment());
-          response = (mostRecentQuery == TransferObject.ID_TEXT && currentBook.equals(to.getPushBook()) && currentPage == to.getPushPage()) ? "There are new posts." : "";
+          String book = to.getPushBook();
+          int page = to.getPushPage();
+          int line = to.getPushLineNumber();
+          String comment = to.getComment();
+
+          if (!ebccd.exists(book)) ebccd.createForum(book);
+          ebccd.getForum(book, page).postComment(line, comment);
+          response = (mostRecentQuery == TransferObject.ID_TEXT && currentBook.equals(book) && currentPage == page) ? "There are new posts." : "";
+          System.out.println("Received post (" + book + ", " + page + ", " + line + ", " + comment + ")");
         }
 
       default:
         break;
     }
     return response;
+  }
+
+  public void printLocalPosts() {
+    String response = "-----Comments-----\n";
+    EBookLineForum eblf = ebccd.getForum(currentBook, currentPage).getLineForum(reqLine);
+    int allCommentLen = eblf.getNumComments();
+    int readIndex = eblf.getIndex();
+    ResponseComments rc = eblf.getCommentsString(readIndex);
+    LinkedList<String> comments = rc.getComments();
+    for (String comment : comments) {
+      response += comment + '\n';
+    }
+    eblf.setIndex(allCommentLen);
+    System.out.println(response);
   }
 
   public boolean isPollSentence(String sentence) {

@@ -25,6 +25,10 @@ public class EBookDatabase {
     return null;
   }
 
+  public ArrayList<EBook> getDatabase() {
+    return database;
+  }
+
   public synchronized void postComment(String book, int page, int lineNumber, String content) {
     System.out.println("Posting comment in book " + book + " on page " + page + " at line number " + lineNumber);
     getBook(book).postComment(page, lineNumber, content);

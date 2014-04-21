@@ -14,8 +14,6 @@ public class TCPServer {
   public static int threadIndex = 0;
 
   public static void main(String[] args) throws Exception {
-    //mine
-    ebd.loadAll();
 
     // see if we do not use default server port
     int serverPort = 6789;
@@ -27,12 +25,16 @@ public class TCPServer {
     // create server socket
     ServerSocket welcomeSocket = new ServerSocket(serverPort);
 
+    System.out.println("The server is listening on port number " + serverPort + ".");
+
+    //mine
+    ebd.loadAll();
+    System.out.println("The database for discussion posts has been intialised.");
+
     while (true) {
 
       // accept connection from connection queue
       Socket connectionSocket = welcomeSocket.accept();
-
-      System.out.println("connection from " + connectionSocket);
 
       // create read stream to get input
       BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));

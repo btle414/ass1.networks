@@ -19,7 +19,7 @@ public class ServerThread implements Runnable {
     this.threadIndex = threadIndex;
     this.socket = socket;
     this.ebd = ebd;
-    this.protocol = new ServerProtocol(threadIndex, ebd);
+    this.protocol = new ServerProtocol(threadIndex, ebd, outToClient);
     this.inFromClient = inFromClient;
     this.outToClient = outToClient;
   }
@@ -36,12 +36,8 @@ public class ServerThread implements Runnable {
   public void newConnection() throws Exception {
     String clientSentence;
     while (true) {
-      System.out.println("Waiting for input");
       clientSentence = inFromClient.readLine();
-
-      System.out.println("received: " + clientSentence);
-      // send reply
-
+      System.out.println("Received from " + protocol.getName() + " line: " + clientSentence);
       execute(clientSentence, outToClient);
     }
   }

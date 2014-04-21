@@ -23,6 +23,10 @@ public class EBook {
     this.pages.add(new EBookPage(pageNum, text));
   }
 
+  public int getNumPages() {
+    return pages.size();
+  }
+
   public EBookPage getPage(int pageNum) {
     if (pageNum < 0 || pageNum >= this.pages.size()) return null;
     return pages.get(pageNum);
