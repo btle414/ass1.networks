@@ -49,10 +49,12 @@ public class ServerProtocol {
     } else if (parts[0].equals("post_to_forum")) {
       int lineNumber = Integer.parseInt(parts[1]);
       String content = "";
-      for (int i = 2; i < parts.length; i++) {
+      int i = -1;
+      for (i = 2; i < parts.length; i++) {
         content += parts[i] + " ";
       }
-      content.substring(0, content.length() - 1);
+      if (i > 2) content = content.substring(0, content.length() - 1);
+
       tf = parsePostToForum(lineNumber, content);
 
     } else if (parts[0].equals("read_post")) {
@@ -65,9 +67,13 @@ public class ServerProtocol {
 
     } else if (parts[0].equals("setup")) {
       String name = "";
-      for (int i = 2; i < parts.length; i++) {
+      int i = -1;
+      for (i = 2; i < parts.length; i++) {
         name += parts[i] + " ";
       }
+      if (i > 2) name = name.substring(0, name.length() - 1);
+      this.name = name;
+
       tf = parseSetup(parts[1], name);
     }
 
@@ -77,8 +83,11 @@ public class ServerProtocol {
   //Below are functions to parse the requests from the server, and generate the response object.
 
   private TransferObject parseDisplay(String book, int page, boolean isCheckPosts) {
-    if (isCheckPosts) System.out.println(name + " wants to check new posts");
-    else System.out.println(name + " requests book " + book + ", page " + page);
+    if (isCheckPosts) System.out.println(name + " wants to check new posts.");
+    else {
+      if (isPushMode) System.out.println(name + " requests book " + book + ", page " + page + ". Push mode active so no posts will be transferred.");
+      else System.out.println(name + " requests book " + book + ", page " + page + ". Push mode not active so posts will be transferred.");
+    }
 
     state.setLastKnownBook(book);
     state.setLastKnownPage(page);
@@ -115,7 +124,7 @@ public class ServerProtocol {
     }
 
     if (numPushes == 0) System.out.println("Push list empty. No action required.");
-    else System.out.println("Pushing to " + numPushes + " clients");
+    else System.out.println("Pushing to " + numPushes + " clients.");
     return to;
   }
 

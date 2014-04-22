@@ -141,12 +141,12 @@ public class ClientProtocol {
    * Checks only the local registry.
    */
   public void printLocalPosts() {
-    String response = "Book by " + currentBook + ", Page " + currentPage + ", Line number " + reqLine + ":\n";
+    System.out.println("Book by " + currentBook + ", Page " + currentPage + ", Line number " + reqLine + ":\n");
     EBookLineForum eblf = ebccd.getForum(currentBook, currentPage).getLineForum(reqLine);
     int allCommentLen = eblf.getNumComments();
     int readIndex = eblf.getIndex();
     ResponseComments rc = eblf.getCommentsString(readIndex);
-    response = rc.toString();
+    String response = rc.toString();
     eblf.setIndex(allCommentLen);
     System.out.println(response);
   }

@@ -18,7 +18,7 @@ public class TCPClient {
     // create socket which connects to server
     Socket clientSocket = new Socket(serverIPAddress, a.getPort());
 
-    ClientThread ct = new ClientThread(clientSocket, a.getMode(), a.getUserName());
+    ClientThread ct = new ClientThread(clientSocket, a.getMode(), a.getUserName(), a.getPolling());
     ct.execute();
 
     // close client socket

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class EBookDatabase {
 
-  public final static String LOCATION = "eBook-pages/";
+  public final static String LOCATION = "eBook-pages" + File.separatorChar;
   public final static int LINES_PER_PAGE = 9;
 
   private ArrayList<EBook> database;
@@ -36,7 +36,6 @@ public class EBookDatabase {
   }
 
   public synchronized void postComment(String book, int page, int lineNumber, String author, String content) {
-    System.out.println("Posting comment in book " + book + " on page " + page + " at line number " + lineNumber);
     getBook(book).postComment(page, lineNumber, author, content);
   }
 
@@ -52,6 +51,9 @@ public class EBookDatabase {
     for (File fileEntry : folder.listFiles()) {
       String fileName = fileEntry.getName();
       String[] info = fileName.split("_");
+
+      //skip hidden files
+      if (info[0] != null && info[0].charAt(0) == '.') continue;
 
       BufferedReader reader = null;
       String[] lines = new String[LINES_PER_PAGE+1];

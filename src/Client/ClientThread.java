@@ -11,21 +11,21 @@ import java.util.TimerTask;
  */
 public class ClientThread {
 
-  private final static int TIMEOUT_INTERVAL_SECONDS = 10;
-
   private Socket clientSocket;
   private ClientProtocol protocol;
   private String pollSentence;
   private Timer poll;
   private String mode;
   private String name;
+  private int pollInterval;
 
-  public ClientThread(Socket socket, String mode, String name) {
+  public ClientThread(Socket socket, String mode, String name, int pollInterval) {
     clientSocket = socket;
     protocol = new ClientProtocol();
     poll = new Timer();
     this.mode = mode;
     this.name = name;
+    this.pollInterval = pollInterval;
   }
 
   /**
@@ -82,7 +82,7 @@ public class ClientThread {
       if (!protocol.isPush() && protocol.isPollSentence(sentence)) {
         poll.cancel();
         poll = new Timer();
-        poll.scheduleAtFixedRate(new PollTimerTask(outToServer, inFromServer, protocol.getPollSentence()), TIMEOUT_INTERVAL_SECONDS*1000, TIMEOUT_INTERVAL_SECONDS*1000);
+        poll.scheduleAtFixedRate(new PollTimerTask(outToServer, inFromServer, protocol.getPollSentence()), pollInterval*1000, pollInterval*1000);
       }
 
       if (!sentence.isEmpty()) writeOut(protocol, outToServer, inFromServer, sentence);
