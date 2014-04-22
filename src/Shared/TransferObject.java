@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Ben on 13/04/2014.
+ * Class which contains information to be passed from the server to the client. There is no nesting of classes to reduce serializable overhead.
  */
 public class TransferObject implements Serializable {
 

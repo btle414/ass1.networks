@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * Created by Ben on 12/04/2014.
+ * Class which represents a forum for an EBook.
  */
 public class EBookForum implements Serializable {
 
@@ -30,10 +31,10 @@ public class EBookForum implements Serializable {
     lines[lineNumber].postComment(author, content);
   }
 
-  public void postCommentWithUpdate(int lineNumber, String author, String content) {
-    lines[lineNumber].postCommentWithUpdate(author, content);
-  }
-
+  /**
+   * Converts the forum to a multidimensional string array.
+   * @return
+   */
   public String[][][] convertForumToStrMArray() {
     String[][][] forum = new String[lines.length][][];
     for (int i = 0; i < lines.length; i++) {

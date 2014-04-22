@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 /**
  * Created by Ben on 13/04/2014.
+ * Class responsible for the client side database, holding books and comments. It holds only EBookForum classes which contain comments for books-pages-lines.
  */
 public class EBookCommentClientDatabase {
 
@@ -14,9 +15,8 @@ public class EBookCommentClientDatabase {
   private final static char PREFIX_NEW_COMMENTS = 'n';
   private final static char PREFIX_SAME_COMMENTS = 'm';
 
-  HashMap<String, EBookForum[]> db;
+  HashMap<String, EBookForum[]> db;   //map book->page->list of comments (state given by length)
 
-  //map book->page->list of comments (state given by length)
   public EBookCommentClientDatabase() {
     this.db = new HashMap<String, EBookForum[]>();
   }
@@ -37,6 +37,13 @@ public class EBookCommentClientDatabase {
     return db.get(book)[page];
   }
 
+  /**
+   * Given a differentiator (stringified multi-dimensional array for book->page->line->comments), determine if our old database is outdated and if there are new posts.
+   * @param book
+   * @param page
+   * @param newForum
+   * @return Returns a string character to prepend to the front of the text string.
+   */
   public char[] hasNewPosts(String book, int page, String[][][] newForum) {
     char[] hasLineNewPosts = new char[EBookDatabase.LINES_PER_PAGE+1];
     if (!exists(book)) createForum(book);
@@ -54,12 +61,17 @@ public class EBookCommentClientDatabase {
     return hasLineNewPosts;
   }
 
+  /**
+   * Same as hasNewPosts but for a push notification.
+   * @param book
+   * @param page
+   * @return
+   */
   public char[] pushHasNewPosts(String book, int page) {
     char[] hasLineNewPosts = new char[EBookDatabase.LINES_PER_PAGE+1];
     if (!exists(book)) createForum(book);
     EBookForum oldForum = db.get(book)[page];
 
-    //TODO should be i=1? or i=0?
     for (int i = 1; i < EBookDatabase.LINES_PER_PAGE+1; i++) {
       int numCurrComments = oldForum.getLineForum(i).getNumComments();
       int numOldComments = oldForum.getLineForum(i).getIndex();

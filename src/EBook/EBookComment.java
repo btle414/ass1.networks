@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Ben on 12/04/2014.
+ * Class which represents an EBook comment.
  */
 public class EBookComment implements Serializable {
 

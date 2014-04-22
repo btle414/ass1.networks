@@ -4,6 +4,9 @@ import Shared.Arguments;
 
 import java.net.*;
 
+/**
+ * The class which instantiates the two client threads.
+ */
 public class TCPClient {
 
   public void run(String[] args) throws Exception {

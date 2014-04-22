@@ -8,6 +8,9 @@ import EBook.ResponseComments;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Class which represents the server side database. It contains a series of EBook classes.
+ */
 public class EBookDatabase {
 
   public final static String LOCATION = "eBook-pages/";
@@ -41,6 +44,9 @@ public class EBookDatabase {
     return getBook(book).getCommentsString(page, lineNumber, index);
   }
 
+  /**
+   * Loads all files in a constant location and populates the database.
+   */
   public synchronized void loadAll() {
     File folder = new File(LOCATION);
     for (File fileEntry : folder.listFiles()) {

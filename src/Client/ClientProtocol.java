@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 /**
  * Created by Ben on 13/04/2014.
+ * Class responsible for parsing user input and parsing server responses.
  */
 public class ClientProtocol {
 
@@ -30,6 +31,11 @@ public class ClientProtocol {
     return isPush;
   }
 
+  /**
+   * Parses the direct input from stdin returns the formatted request
+   * @param userInput
+   * @return
+   */
   public synchronized String parsePre(String userInput) {
     String[] parts = userInput.split(" ");
     String parsed = userInput;
@@ -38,8 +44,10 @@ public class ClientProtocol {
       currentBook = parts[1];
       currentPage = Integer.parseInt(parts[2]);
       mostRecentQuery = TransferObject.ID_TEXT;
+
     } else if (parts[0].equals("post_to_forum")) {
       mostRecentQuery = TransferObject.ID_POST;
+
     } else if (parts[0].equals("read_post")) {
       mostRecentQuery = TransferObject.ID_READ;
       reqLine = Integer.parseInt(parts[1]);
@@ -47,12 +55,13 @@ public class ClientProtocol {
         parsed = "";
         printLocalPosts();
       }
+
     } else if (parts[0].equals("setup")) {
       mostRecentQuery = TransferObject.ID_SETUP;
       if (parts[1].equals("push")) {
         isPush = true;
       }
-    //this query below never gets called
+
     } else if (parts[0].equals("check_new_posts")) {
       mostRecentQuery = TransferObject.ID_CHECK_NEW_POSTS;
     }
@@ -60,6 +69,11 @@ public class ClientProtocol {
     return parsed;
   }
 
+  /**
+   * Parses the server's response and returns the string to be outputted.
+   * @param to
+   * @return
+   */
   public synchronized String parsePost(TransferObject to) {
     String response = "";
 
@@ -82,7 +96,7 @@ public class ClientProtocol {
         for (int i = (isPush) ? eblf.getIndex() : eblf.getNumComments(); i < allCommentLen; i++) {
           String[] str = to.getForum()[reqLine][i];
           if (!isPush) eblf.postComment(str[0], str[1]);
-          response += i + " " + str[0] + ": " + str[1] + '\n';
+          response += (i+1) + " " + str[0] + ": " + str[1] + '\n';
         }
         ebccd.getForum(currentBook, currentPage).getLineForum(reqLine).setIndex(allCommentLen);
         break;
@@ -122,6 +136,10 @@ public class ClientProtocol {
     return response;
   }
 
+  /**
+   * Prints to stdout the new posts for the current book and page and sets them to read.
+   * Checks only the local registry.
+   */
   public void printLocalPosts() {
     String response = "Book by " + currentBook + ", Page " + currentPage + ", Line number " + reqLine + ":\n";
     EBookLineForum eblf = ebccd.getForum(currentBook, currentPage).getLineForum(reqLine);

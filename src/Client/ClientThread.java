@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 /**
  * Created by Ben on 13/04/2014.
+ * Main thread responsible for reading user input, passing it to the parser and then outputting it to the server. Contains a timer for polls.
  */
 public class ClientThread {
 
@@ -27,6 +28,9 @@ public class ClientThread {
     this.name = name;
   }
 
+  /**
+   * Function which will loop and continuously read user input, and then send the appropriate formatted request.
+   */
   public void execute() {
     BufferedReader inFromUser = null;
     DataOutputStream outToServer = null;

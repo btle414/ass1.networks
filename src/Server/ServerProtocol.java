@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Ben on 12/04/2014.
+ * Class responsible for parsing requests and returning (if required) appropriate responses.
  */
 public class ServerProtocol {
 
@@ -33,13 +34,17 @@ public class ServerProtocol {
     return name;
   }
 
-  //parse client message and return the response to send back to the client
+  /**
+   * Parses client message and return the response to send back to the client.
+   * @param message
+   * @return
+   */
   public synchronized TransferObject parse(String message) {
     TransferObject tf = new TransferObject();
     String[] parts = message.split(" ");
 
     if (parts[0].equals("display")) {
-      tf = parseDisplay(parts[1], Integer.parseInt(parts[2]));
+      tf = parseDisplay(parts[1], Integer.parseInt(parts[2]), false);
 
     } else if (parts[0].equals("post_to_forum")) {
       int lineNumber = Integer.parseInt(parts[1]);
@@ -54,7 +59,7 @@ public class ServerProtocol {
       tf = parseReadPost(Integer.parseInt(parts[1]));
 
     } else if (parts[0].equals("check_new_posts")) {
-      tf = parseDisplay(parts[1], Integer.parseInt(parts[2]));
+      tf = parseDisplay(parts[1], Integer.parseInt(parts[2]), true);
       tf.setID(TransferObject.ID_CHECK_NEW_POSTS);
 
 
@@ -69,8 +74,11 @@ public class ServerProtocol {
     return tf;
   }
 
-  private TransferObject parseDisplay(String book, int page) {
-    System.out.println(name + " requests book " + book + ", page " + page);
+  //Below are functions to parse the requests from the server, and generate the response object.
+
+  private TransferObject parseDisplay(String book, int page, boolean isCheckPosts) {
+    if (isCheckPosts) System.out.println(name + " wants to check new posts");
+    else System.out.println(name + " requests book " + book + ", page " + page);
 
     state.setLastKnownBook(book);
     state.setLastKnownPage(page);
@@ -91,9 +99,6 @@ public class ServerProtocol {
     int index = 0;
     int numPushes = 0;
     for (ObjectOutputStream oos : TCPServer.objectStreams) {
-      //TODO THIS IS VERY SLOW
-      //change to iterator
-      //also this is quite hacky abstraction
       if (TCPServer.pushList.get(index)) {
         TransferObject outputObj = new TransferObject(TransferObject.ID_PUSH_POST, state.getLastKnownBook(), state.getLastKnownPage(), lineNumber, name, content);
 

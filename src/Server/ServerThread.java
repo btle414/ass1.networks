@@ -7,6 +7,7 @@ import java.net.Socket;
 
 /**
  * Created by ben on 12/04/14.
+ * Class which represents the server thread, which connections 1 client to the server.
  */
 public class ServerThread implements Runnable {
 

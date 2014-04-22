@@ -2,6 +2,7 @@ package EBook;
 
 /**
  * Created by Ben on 12/04/14.
+ * Class which represents a definitive state which can define a book, page and line number for which the last fetched comments was queried.
  */
 public class EBookState {
 

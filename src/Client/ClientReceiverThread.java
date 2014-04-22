@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 
 /**
  * Created by Benjamin on 15/04/2014.
+ * Class responsible for the receiver thread of the client. It will listen for responses, parse them and then print the stdout the response.
  */
 public class ClientReceiverThread implements Runnable {
 
@@ -35,7 +36,6 @@ public class ClientReceiverThread implements Runnable {
       String output = cp.parsePost(obj);
 
       // print output
-      //System.out.println("===== FROM SERVER ==== ");
       if (!output.isEmpty()) System.out.println(output);
     }
 

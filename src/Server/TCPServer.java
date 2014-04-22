@@ -6,6 +6,9 @@ import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.LinkedList;
 
+/**
+ * Class which waits for new connections, and instantiates the thread for that connection.
+ */
 public class TCPServer {
 
   public static EBookDatabase ebd = new EBookDatabase();

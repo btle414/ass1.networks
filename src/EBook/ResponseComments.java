@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 /**
  * Created by Ben on 12/04/14.
+ * Class which holds an abstraction over just a list of comments. Contains an index which holds the state of the comments to be compared with the server's index.
  */
 public class ResponseComments {
 
@@ -38,7 +39,7 @@ public class ResponseComments {
     int i = 1;
     for (EBookComment s : comments) {
       //str += (index - numComments + i) + " " + s + '\n';
-      str += s.index + " " + s.author + ": " + s.message + '\n';
+      str += (s.index+1) + " " + s.author + ": " + s.message + '\n';
       i++;
     }
 

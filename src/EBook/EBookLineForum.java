@@ -5,12 +5,12 @@ import java.util.LinkedList;
 
 /**
  * Created by Ben on 12/04/2014.
+ * Class which represents a forum for a line of a page of a book.
  */
 public class EBookLineForum implements Serializable {
 
   private LinkedList<EBookComment> comments;
-
-  private int index; //for use on client end
+  private int index;
 
   public EBookLineForum() {
     comments = new LinkedList<EBookComment>();
@@ -21,15 +21,15 @@ public class EBookLineForum implements Serializable {
     comments.add(new EBookComment(comments.size(), author, content));
   }
 
-  public void postCommentWithUpdate(String author, String content) {
-    postComment(author, content);
-    index++;
-  }
-
   public int getNumComments() {
     return comments.size();
   }
 
+  /**
+   * Returns all comments for this line forum.
+   * @param index
+   * @return
+   */
   public ResponseComments getCommentsString(int index) {
     ResponseComments rc = new ResponseComments();
     int i = -1;
@@ -43,6 +43,10 @@ public class EBookLineForum implements Serializable {
     return rc;
   }
 
+  /**
+   * Returns the comments as a multidimensional array.
+   * @return
+   */
   public String[][] getSerializableComments() {
     String[][] strs = new String[comments.size()][2];
     int i = 0;

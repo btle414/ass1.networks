@@ -2,6 +2,7 @@ package Shared;
 
 /**
  * Created by ben on 29/03/14.
+ * Class which parses arguments from the terminal, and holds the appropriate information.
  */
 public class Arguments {
 

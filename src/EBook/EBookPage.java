@@ -2,6 +2,7 @@ package EBook;
 
 /**
  * Created by ben on 29/03/14.
+ * Class which represents an page of an EBook.
  */
 public class EBookPage {
 
@@ -13,10 +14,6 @@ public class EBookPage {
     this.pageNum = pageNum;
     this.text = text;
     this.forum = new EBookForum();
-  }
-
-  public int getPageNum() {
-    return pageNum;
   }
 
   public String[] getText() {

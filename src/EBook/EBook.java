@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 /**
  * Created by ben on 29/03/14.
+ * Class which holds the representation of an EBook.
  */
 public class EBook {
 
